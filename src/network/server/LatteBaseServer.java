@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
 
-public class LatteServer {
+public class LatteBaseServer {
 	
 	private ServerSocket server;
 	private ExecutorService executor;
@@ -26,7 +26,7 @@ public class LatteServer {
 	//
 	public static void main(String[] args) {
 		
-		LatteServer server = new LatteServer();
+		LatteBaseServer server = new LatteBaseServer();
 		
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
