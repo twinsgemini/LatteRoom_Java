@@ -23,9 +23,7 @@ public class LatteBaseServer {
 	
 	private ServerSocket server;
 	private ExecutorService executor;
-//	private Map<Integer, Tester> list;
 	private Map<Integer, Tester> list = new ConcurrentHashMap<Integer, Tester>();
-//	private List<Tester> list;
 	
 	private Gson gson = new Gson();
 	
@@ -40,7 +38,6 @@ public class LatteBaseServer {
 			public void run() {
 				System.out.println("close");
 //				server.stopServer();
-//				super.run();
 			}
 		});
 		
@@ -59,9 +56,6 @@ public class LatteBaseServer {
 	//
 	public void startServer() {
 		executor = Executors.newCachedThreadPool();
-//		list = new HashMap<Integer, Tester>();
-//		list = new ArrayList<Tester>();
-		
 		
 		try {
 			server = new ServerSocket();
@@ -81,7 +75,6 @@ public class LatteBaseServer {
 				try {
 					socket = server.accept();
 					Tester tester = new Tester(socket);
-//					list.add(tester);
 					list.put(tester.hashCode(), tester);
 					
 					executor.submit(tester);
@@ -91,14 +84,13 @@ public class LatteBaseServer {
 					} else continue;
 				} catch (IOException e) {
 //					e.printStackTrace();
-//					System.out.println("accept IOException");
 					break;
 				}
 			}
 			stopServer();
 		};
 		executor.submit(runnable);
-	}
+	} // startServer();
 	
 	public void stopServer() {
 //		System.out.println("called stopServer");
@@ -129,7 +121,7 @@ public class LatteBaseServer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	} // stopServer()
 
 	class Tester implements Runnable {
 		
@@ -189,7 +181,6 @@ public class LatteBaseServer {
 				}
 			} // while()
 		} // run()
-		
-	}
+	} // Tester.class
 }
 
