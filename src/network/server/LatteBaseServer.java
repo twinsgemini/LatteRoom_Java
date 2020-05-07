@@ -8,7 +8,11 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +23,9 @@ public class LatteBaseServer {
 	
 	private ServerSocket server;
 	private ExecutorService executor;
+//	private Map<Integer, Tester> list;
+	private Map<Integer, Tester> list = new ConcurrentHashMap<Integer, Tester>();
+//	private List<Tester> list;
 	
 	private Gson gson = new Gson();
 	
@@ -52,6 +59,9 @@ public class LatteBaseServer {
 	//
 	public void startServer() {
 		executor = Executors.newCachedThreadPool();
+//		list = new HashMap<Integer, Tester>();
+//		list = new ArrayList<Tester>();
+		
 		
 		try {
 			server = new ServerSocket();
@@ -71,6 +81,9 @@ public class LatteBaseServer {
 				try {
 					socket = server.accept();
 					Tester tester = new Tester(socket);
+//					list.add(tester);
+					list.put(tester.hashCode(), tester);
+					
 					executor.submit(tester);
 				} catch (SocketTimeoutException e) {
 					if(Thread.interrupted()) {
@@ -90,6 +103,17 @@ public class LatteBaseServer {
 	public void stopServer() {
 //		System.out.println("called stopServer");
 		try {
+//			if(list.size() > 0) {
+//				for(Tester t : list) {
+//					t.close();
+//					//				list.remove(t);
+//				}
+//			}
+			for(Integer key : list.keySet()) {
+				Tester t = list.get(key);
+				t.close();
+				list.remove(key);
+			}
 			if(server != null && !server.isClosed()) {
 				server.close();
 			}
@@ -107,64 +131,65 @@ public class LatteBaseServer {
 		}
 	}
 
-}
-
-class Tester implements Runnable {
-	
-	private Socket socket;
-	private BufferedReader input;
-	private PrintWriter output;
-	
-	Tester(Socket socket) {
-		this.socket = socket;
-	}
-	
-	public void close() {
-		String addr = socket.getInetAddress().toString();
-		try {
-			if(socket != null && !socket.isClosed()) {
-				socket.close();
-				input.close();
-				output.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} // try
-		System.out.println("[" + addr + "] closed");
-	}
-	
-	public void send(String msg) {
-		output.println(msg);
-		output.flush();
-	}
-	
-	@Override
-	public void run() {
+	class Tester implements Runnable {
 		
-		try {
-			this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-			this.output = new PrintWriter(socket.getOutputStream());
-		} catch (IOException e) {
-			this.close();
-		} // try
-		System.out.println("[" + socket.getInetAddress().toString() + "] connected");
+		private Socket socket;
+		private BufferedReader input;
+		private PrintWriter output;
 		
-		String line = "";
-		while(true) {
+		Tester(Socket socket) {
+			this.socket = socket;
+		}
+		
+		public void close() {
+			String addr = socket.getInetAddress().toString();
 			try {
-				line = input.readLine();
-				if(line == null) {
-					throw new IOException();
-				} else {
-					
-					send(line);
-					
+				if(socket != null && !socket.isClosed()) {
+					socket.close();
+					input.close();
+					output.close();
 				}
+				list.remove(this);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} // try
+			System.out.println("[" + addr + "] closed");
+		}
+		
+		public void send(String msg) {
+			output.println(msg);
+			output.flush();
+		}
+		
+		@Override
+		public void run() {
+			
+			try {
+				this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+				this.output = new PrintWriter(socket.getOutputStream());
 			} catch (IOException e) {
 				this.close();
-				break;
-			}
-		} // while()
-	} // run()
-	
+			} // try
+			System.out.println("[" + socket.getInetAddress().toString() + "] connected");
+			
+			String line = "";
+			while(true) {
+				try {
+					line = input.readLine();
+					if(line == null) {
+						throw new IOException();
+					} else {
+						
+						send(line);
+						
+					}
+				} catch (IOException e) {
+					this.close();
+					break;
+				}
+			} // while()
+		} // run()
+		
+	}
 }
+

@@ -128,6 +128,7 @@ public class TestClient extends Application{
 					line = input.readLine();
 					
 					if(line == null) {
+						displayText("server error. disconnected");
 						throw new IOException();
 					} else {
 						displayText(line);
@@ -151,13 +152,7 @@ public class TestClient extends Application{
 				if(output != null) output.close();
 			}
 			if(executor != null && !executor.isShutdown()) {
-				executor.shutdown();
-				do {
-					if(executor.isTerminated()) {
-						List<Runnable> list = executor.shutdownNow();
-						displayText(list.size() + " job is alive...");
-					}
-				} while (!executor.awaitTermination(10, TimeUnit.SECONDS));
+				executor.shutdownNow();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
