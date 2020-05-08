@@ -32,7 +32,7 @@ import javafx.stage.Stage;
 
 public class TestClient extends Application {
 
-	private static final String COMPORT_NAMES = "COM13";
+	private static final String COMPORT_NAMES = "COM12";
 	private static final String SERVER_ADDR = "localhost";
 	private static final int SERVER_PORT = 55566;
 	
@@ -266,6 +266,8 @@ public class TestClient extends Application {
 			}
 			// Ignore all the other eventTypes, but you should consider the other ones.
 		}
+		
+		
 		
 	}
 
