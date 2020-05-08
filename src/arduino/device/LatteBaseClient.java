@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
+import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
@@ -30,7 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
-public class TestClient extends Application {
+public class LatteBaseClient extends Application {
 
 	private static final String COMPORT_NAMES = "COM12";
 	private static final String SERVER_ADDR = "localhost";
@@ -45,6 +46,7 @@ public class TestClient extends Application {
 	
 	private ServerListener toServer = new ServerListener();
 	private SerialListener toArduino = new SerialListener();
+	private SampleSharedObject temp;
 	
 	private Gson gson = new Gson();
 	
@@ -61,6 +63,16 @@ public class TestClient extends Application {
 	// ======================================================
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		// Logic
+		toServer.connect();
+		toArduino.initialize();
+
+		// SharedObject
+		temp = new SampleSharedObject();
+		
+		
+		// UI ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		root = new BorderPane();
 		root.setPrefSize(700, 500);
 		
@@ -69,32 +81,6 @@ public class TestClient extends Application {
 		textarea.setEditable(false);
 		root.setCenter(textarea);
 		
-		toServer.connect();
-		toArduino.initialize();
-		
-//		// Bottom ----------------------------------------------
-//		connBtn = new Button("conn");
-//		connBtn.setPrefSize(150, 40);
-//		connBtn.setOnAction((e) -> {
-//			toServer.connect();
-//		});
-//		
-//		disconnBtn = new Button("disconn");
-//		disconnBtn.setPrefSize(150, 40);
-//		disconnBtn.setOnAction((e) -> {
-//			toServer.disconnect();
-//		});
-//		
-//		inputField = new TextField();
-//		inputField.setPrefSize(400, 40);
-//		inputField.setOnAction((e) -> {
-//			toServer.send(inputField.getText());
-//			inputField.clear();
-//		});
-//		
-//		bottom = new FlowPane();
-//		bottom.getChildren().addAll(connBtn, disconnBtn, inputField);
-//		root.setBottom(bottom);
 		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
@@ -149,6 +135,15 @@ public class TestClient extends Application {
 							throw new IOException();
 						} else {
 							displayText("Server ] " + line);
+							
+							// Message jsonData = gson.fromJson(line, Message.class);
+							
+							int data = 20;	// 데이터는 line에서 받아요
+							// int data = jsonData.states;
+							
+							// 서버에서 날아온 희망온도를 공유객체에 저장해요
+							temp.setData(data);
+							
 							
 							// Arduino로 전송하는 메서드
 							 toArduino.send(line);
@@ -256,6 +251,15 @@ public class TestClient extends Application {
 				try {
 					String inputLine = serialIn.readLine();
 					
+					// 아두이노에서 받은 데이터를 사용하기 쉽게 자르거나 객체화 해요
+					// Message jsonData = gson.fromJson(line, Message.class);
+					
+					// 아두이노에서 받은 데이터를 공유객체의 희망온도랑 비교해요
+//					if(temp.getData() > jsonData.states) {
+//						
+//					}
+					
+					// 데이터를 필요한 곳으로 전달해요
 //					toServer.send(inputLine);
 					send(inputLine);
 					
@@ -271,4 +275,23 @@ public class TestClient extends Application {
 		
 	}
 
+}
+
+class SampleSharedObject {
+	// Temperature
+	private int data;
+	private Object MONITOR = new Object();
+	
+	public int getData() {
+		synchronized (MONITOR) {
+			return this.data;
+		}
+	}
+	
+	public void setData(int data) {
+		synchronized (MONITOR) {
+			this.data = data;
+		}
+	}
+	
 }
