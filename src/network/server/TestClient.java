@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -164,4 +165,37 @@ public class TestClient extends Application{
 		output.flush();
 	}
 
+}
+
+class Message {
+	private String deviceID;
+	private String deviceType;
+	private SensorData sensorData;
+	private AlertData alert;
+}
+
+
+class Device {
+	private String deviceID;
+	private String deviceType;
+	private Map<String, Sensor> sensorList;
+}
+
+class Sensor {
+	private String sensorID;
+	private String sensorType;
+	private SensorData recentState;
+	
+}
+
+class SensorData {
+	private String sensorID;
+	private String eventTime;
+	private String states;
+	private String stateDetail;
+	
+}
+
+class AlertData {
+	private String datetime;
 }

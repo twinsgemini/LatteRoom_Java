@@ -75,9 +75,10 @@ public class LatteBaseServer {
 				try {
 					socket = server.accept();
 					Tester tester = new Tester(socket);
-					list.put(tester.hashCode(), tester);
 					
+					list.put(tester.hashCode(), tester);
 					executor.submit(tester);
+					
 				} catch (SocketTimeoutException e) {
 					if(Thread.interrupted()) {
 						break;
