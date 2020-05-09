@@ -166,36 +166,3 @@ public class TestClient extends Application{
 	}
 
 }
-
-class Message {
-	private String deviceID;
-	private String deviceType;
-	private SensorData sensorData;
-	private AlertData alert;
-}
-
-
-class Device {
-	private String deviceID;
-	private String deviceType;
-	private Map<String, Sensor> sensorList;
-}
-
-class Sensor {
-	private String sensorID;
-	private String sensorType;
-	private SensorData recentState;
-	
-}
-
-class SensorData {
-	private String sensorID;
-	private String eventTime;
-	private String states;
-	private String stateDetail;
-	
-}
-
-class AlertData {
-	private String datetime;
-}

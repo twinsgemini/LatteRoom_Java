@@ -94,14 +94,7 @@ public class LatteBaseServer {
 	} // startServer();
 	
 	public void stopServer() {
-//		System.out.println("called stopServer");
 		try {
-//			if(list.size() > 0) {
-//				for(Tester t : list) {
-//					t.close();
-//					//				list.remove(t);
-//				}
-//			}
 			for(Integer key : list.keySet()) {
 				Tester t = list.get(key);
 				t.close();
