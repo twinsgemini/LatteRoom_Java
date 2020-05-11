@@ -1,4 +1,4 @@
-package network.server.vo;
+package network.server.test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Device implements Connection, Runnable {
-	
+public class User extends AbstractClient {
+
 	private String deviceID;
 	private Socket socket;
 	private BufferedReader input;
@@ -17,7 +17,7 @@ public class Device implements Connection, Runnable {
 	public Socket getSocket() {
 		return socket;
 	}
-	
+
 	public void setDeviceID(String deviceID) {
 		this.deviceID = deviceID;
 	}
@@ -49,6 +49,9 @@ public class Device implements Connection, Runnable {
 		while(true) {
 			try {
 				line = input.readLine();
+				
+				System.out.println("[" + socket.getInetAddress() + "] " + line);
+				
 				if(line == null) {
 					throw new IOException();
 				} else {
