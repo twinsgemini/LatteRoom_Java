@@ -12,12 +12,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import com.google.gson.Gson;
+
+import network.server.dao.Client;
+import network.server.test.AbstractClient;
+import network.server.test.User;
+
 
 public class ServerService {
 	
 	private ServerSocket server;
 	private ExecutorService executor;
-	private Map<Integer, Object> list = new ConcurrentHashMap<Integer, Object>();
+	private Map<String, Client> list = new ConcurrentHashMap<String, Client>();
+	private Gson gson = new Gson();
 	
 	
 	//
@@ -42,6 +49,14 @@ public class ServerService {
 			while(true) {
 				try {
 					socket = server.accept();
+					
+					System.out.println("[" + socket.getInetAddress() + "] connect");
+					
+					Client user = new Client(socket);
+//					user.setSocket(socket);
+					list.put(user.getDeviceID(), user);
+					executor.submit(user);
+					
 //					Tester tester = new Tester(socket);
 //					
 //					list.put(tester.hashCode(), tester);
@@ -63,11 +78,11 @@ public class ServerService {
 	
 	public void stopServer() {
 		try {
-//			for(Integer key : list.keySet()) {
-//				Tester t = list.get(key);
-//				t.close();
-//				list.remove(key);
-//			}
+			for(String key : list.keySet()) {
+				Client t = list.get(key);
+				t.close();
+				list.remove(key);
+			}
 			if(server != null && !server.isClosed()) {
 				server.close();
 			}
