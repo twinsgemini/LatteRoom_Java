@@ -4,18 +4,20 @@ import network.server.dao.Device;
 
 public class Sensor {
 	private String deviceID;
-	private String sensorID;
+	private String sensorID = "" + this.hashCode();
 	private String sensorType;
 	private SensorData recentData;
 	
 	
 	//
-	public Sensor(String sensorID, String sensorType) {
-		this.sensorID = sensorID;
+	public Sensor(String sensorType) {
 		this.sensorType = sensorType;
 	}
 	
-//	public Sensor()
+	public Sensor(Device device, String sensorType) {
+		this.deviceID = device.getDeviceID();
+		this.sensorType = sensorType;
+	}
 	
 	
 	//
