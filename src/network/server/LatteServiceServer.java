@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import network.server.dao.Client;
+import network.server.dao.Device;
 import network.server.service.ServerService;
 
 public class LatteServiceServer {
@@ -42,7 +42,7 @@ public class LatteServiceServer {
 					
 //					System.out.println("[" + socket.getInetAddress() + "] connect");
 					
-					Client user = new Client(socket);
+					Device user = new Device(socket);
 					service.add(user);
 					executor.submit(user);
 					
@@ -63,7 +63,7 @@ public class LatteServiceServer {
 	private void stopServer() {
 		try {
 			for(String key : service.getList().keySet()) {
-				Client t = service.get(key);
+				Device t = service.get(key);
 				t.close();
 				service.remove(t);
 			}

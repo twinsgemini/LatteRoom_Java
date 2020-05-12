@@ -14,18 +14,19 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
 
-import network.server.dao.Client;
+import network.server.dao.Device;
 import network.server.test.AbstractClient;
 import network.server.test.SharedMessage;
 import network.server.test.User;
 import network.server.vo.Message;
+import network.server.vo.SensorData;
 
 
 public class ServerService {
 	
 	private static final Object MONITOR = new Object();
 	
-	private Map<String, Client> list = new ConcurrentHashMap<String, Client>();
+	private Map<String, Device> list = new ConcurrentHashMap<String, Device>();
 	private Gson gson = new Gson();
 	
 	private ServerService() {}
@@ -39,25 +40,29 @@ public class ServerService {
 	}
 	
 	//
-	public void add(Client c) {
+	public void add(Device c) {
 		this.list.put(c.getDeviceID(), c);
 	}
 	
-	public void remove(Client c) {
+	public void remove(Device c) {
 		this.list.remove(c.getDeviceID());
 	}
 	
-	public Client get(String id) {
+	public Device get(String id) {
 		return this.list.get(id);
 	}
 	
-	public Map<String, Client> getList() {
+	public Map<String, Device> getList() {
 		return this.list;
 	}
 	
 	public void dataHandler(String jsonData) {
 		Message data = gson.fromJson(jsonData, Message.class);
 		System.out.println(data.getDeviceID() + " : " + data.getJsonData());
+		
+		if (data.getVoType().equals("SensorData")) {
+			SensorData sensorData = gson.fromJson(data.getJsonData(), SensorData.class);
+		}
 		
 	}
 	

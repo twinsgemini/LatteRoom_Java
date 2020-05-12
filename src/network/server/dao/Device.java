@@ -11,8 +11,10 @@ import com.google.gson.Gson;
 import network.server.service.ServerService;
 import network.server.vo.Message;
 
-public class Client implements Runnable {
+public class Device implements Runnable {
 	
+//	public static String deviceID = "A0001";
+//	public static String deviceID = "" + Client.hashCode();
 	private String deviceID;
 	private Socket socket;
 	private BufferedReader input;
@@ -20,7 +22,7 @@ public class Client implements Runnable {
 	private ServerService service = ServerService.getInstance();
 	private Gson gson = new Gson();
 	
-	public Client(Socket socket) {
+	public Device(Socket socket) {
 		this.socket = socket;
 		this.deviceID = "" + this.hashCode();
 	}
