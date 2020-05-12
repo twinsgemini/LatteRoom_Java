@@ -26,23 +26,23 @@ public class LatteBaseServer {
 	
 	private Gson gson = new Gson();
 	
-	class sharedObj{
-		private LinkedList<PrintWriter> list = new LinkedList<PrintWriter>();
-		
-		public void addPr(PrintWriter out) {
-			list.addLast(out);
-		}
-
-		public void broadcast(String msg) {
-			for(PrintWriter pr : list) {
-				pr.println(msg);
-				pr.flush();
-			}
-		}
-		
-		
-	}
-	private sharedObj shared = new sharedObj();
+//	class sharedObj{
+//		private LinkedList<PrintWriter> list = new LinkedList<PrintWriter>();
+//		
+//		public void addPr(PrintWriter out) {
+//			list.addLast(out);
+//		}
+//
+//		public void broadcast(String msg) {
+//			for(PrintWriter pr : list) {
+//				pr.println(msg);
+//				pr.flush();
+//			}
+//		}
+//		
+//		
+//	}
+//	private sharedObj shared = new sharedObj();
 	
 	//
 	public static void main(String[] args) {
@@ -178,7 +178,8 @@ public class LatteBaseServer {
 			try {
 				this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 				this.output = new PrintWriter(socket.getOutputStream());
-				shared.addPr(this.output);
+//				shared.addPr(this.output);
+				findDevice();
 			} catch (IOException e) {
 				this.close();
 			} // try
@@ -207,8 +208,9 @@ public class LatteBaseServer {
 						throw new IOException();
 					} else {
 						
-						send(line);
-						shared.broadcast(line);
+						//send(line);
+						sendAllDeviceThread(line);
+//						shared.broadcast(line);
 					}
 				} catch (IOException e) {
 					this.close();
@@ -217,5 +219,19 @@ public class LatteBaseServer {
 			} // while()
 		} // run()
 	} // Tester.class
+	
+	public void findDevice() {
+		for(Integer t : list.keySet()) {
+			System.out.println(t);
+		}
+		
+		
+	}
+	public void sendAllDeviceThread(String msg) {
+		for(Tester t : list.values()) {
+			t.send(msg);	
+		}
+	}
+	
 }
 
