@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import network.server.vo.Message;
 
 public class TestClient extends Application{
 
@@ -36,6 +37,8 @@ public class TestClient extends Application{
 	private TextField inputField;
 	private TextArea textarea;
 	
+	//
+	private String deviceID = "" + this.hashCode();
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
@@ -161,7 +164,8 @@ public class TestClient extends Application{
 	} // stopClient()
 	
 	public void send(String msg) {
-		output.println(msg);
+//		output.println(msg);
+		output.println(gson.toJson(new Message(this.deviceID, "MESSAGE", msg)));
 		output.flush();
 	}
 
