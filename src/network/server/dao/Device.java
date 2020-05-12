@@ -15,19 +15,19 @@ public class Device implements Runnable {
 	
 //	public static String deviceID = "A0001";
 //	public static String deviceID = "" + Client.hashCode();
-	private String deviceID;
+	private static String deviceID;
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
 	private ServerService service = ServerService.getInstance();
-	private Gson gson = new Gson();
+ 	private static Gson gson = new Gson();
 	
 	public Device(Socket socket) {
 		this.socket = socket;
 		this.deviceID = "" + this.hashCode();
 	}
 	
-	public String getDeviceID() {
+	public static String getDeviceID() {
 		return deviceID;
 	}
 	
