@@ -6,12 +6,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.google.gson.Gson;
+
+import network.server.service.ServerService;
+import network.server.vo.Message;
+
 public class Client implements Runnable {
 	
 	private String deviceID;
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
+	private ServerService service = ServerService.getInstance();
+	private Gson gson = new Gson();
 	
 	public Client(Socket socket) {
 		this.socket = socket;
@@ -74,6 +81,10 @@ public class Client implements Runnable {
 					throw new IOException();
 				} else {
 					
+					System.out.println(line);
+//					service.add(gson.fromJson(line, Message.class));
+					service.dataHandler(line);
+					System.out.println("send");
 					send(line);
 					
 				}
