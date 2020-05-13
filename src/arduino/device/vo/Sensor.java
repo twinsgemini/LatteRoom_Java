@@ -1,6 +1,6 @@
 package arduino.device.vo;
 
-import network.server.dao.Device;
+import arduino.device.LatteBaseClient;
 
 public class Sensor {
 	private String deviceID;
@@ -14,11 +14,11 @@ public class Sensor {
 		this.sensorType = sensorType;
 	}
 	
-	public Sensor(Device device, String sensorType) {
-		this.deviceID = device.getDeviceID();
+	public Sensor(LatteBaseClient device, String sensorType) {
+        this.deviceID = LatteBaseClient.getDeviceId();
 		this.sensorType = sensorType;
 	}
-	
+
 	public Sensor() {
 		
 	}
@@ -35,15 +35,15 @@ public class Sensor {
     
     // 지정된 센서에 최신 데이터 업데이트 (states)
     public SensorData setRecentData(String states) {
-//        this.recentData = new SensorData(this.sensorID, states);
+		// this.recentData = new SensorData(this.sensorID, states);
     	this.recentData.update(states);
         return this.recentData;
     }
 
     // 지정된 센서에 최신 데이터 업데이트 (states, stateDetail)
     public SensorData setRecentData(String states, String stateDetail) {
-//        this.recentData = new SensorData(this.sensorID, states, stateDetail);
-        this.recentData.update(states, stateDetail);
+		// this.recentData = new SensorData(this.sensorID, states, stateDetail);
+		this.recentData.update(states, stateDetail);
         return this.recentData;
     }
 	

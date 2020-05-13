@@ -27,6 +27,8 @@ public class SensorData {
 		this.stateDetail = stateDetail;
 	}
 	
+
+	// custom method
 	public void update(String states) {
 		this.time = new Date(System.currentTimeMillis());
 		this.states = states;
