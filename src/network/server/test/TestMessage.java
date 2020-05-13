@@ -11,7 +11,7 @@ public class TestMessage {
 		
 		Gson gson = new Gson();
 		
-		SensorData currData = new SensorData("30");
+		SensorData currData = new SensorData("unknown", "30");
 		
 		Message data = new Message(currData);
 		
