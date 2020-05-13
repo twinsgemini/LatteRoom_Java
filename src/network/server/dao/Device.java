@@ -29,6 +29,11 @@ public class Device implements Runnable {
 		this.deviceID = "" + this.hashCode();
 	}
 	
+	public Device(String deviceID, Socket socket) {
+		this.deviceID = deviceID;
+		this.socket = socket;
+	}
+	
 	
 	// get, set
 	public static String getDeviceID() {
