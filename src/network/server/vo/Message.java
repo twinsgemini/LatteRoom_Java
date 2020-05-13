@@ -10,6 +10,7 @@ public class Message {
 	private String jsonData;
 	private static Gson gson = new Gson();
 	
+	
 	// constructor
 	private Message() {
         this.deviceID = Device.getDeviceID();
@@ -32,6 +33,7 @@ public class Message {
 		this.voType = "Request";
 		this.jsonData = Message.gson.toJson(new SensorData(states, stateDetail));
 	}
+	
 	
 	// get, set method
 	public String getDeviceID() {
