@@ -127,7 +127,7 @@ public class TestClient extends Application{
 			while(true) {
 				try {
 					line = input.readLine();
-					
+					System.out.println(line);
 					if(line == null) {
 						displayText("server error. disconnected");
 						throw new IOException();
