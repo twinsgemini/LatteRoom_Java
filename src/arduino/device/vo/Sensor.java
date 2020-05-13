@@ -10,17 +10,10 @@ public class Sensor {
 	
 	
 	// constructor
-	public Sensor(String sensorType) {
-		this.sensorType = sensorType;
-	}
-	
-	public Sensor(LatteBaseClient device, String sensorType) {
-        this.deviceID = LatteBaseClient.getDeviceId();
-		this.sensorType = sensorType;
-	}
-
-	public Sensor() {
-		
+	public Sensor(String id, String type) {
+		this.deviceID = LatteBaseClient.getDeviceId();
+		this.sensorID = id;
+		this.sensorType = type;
 	}
 	
 	

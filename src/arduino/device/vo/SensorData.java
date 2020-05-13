@@ -3,7 +3,6 @@ package arduino.device.vo;
 import java.sql.Date;
 
 public class SensorData {
-	private int dataID;
 	private String sensorID;
 	private Date time;
 	private String states;
@@ -12,7 +11,6 @@ public class SensorData {
 	
 	// constructor
 	private SensorData() {
-		this.dataID = this.hashCode();
 		this.time = new Date(System.currentTimeMillis());
 	}
 	
@@ -41,14 +39,6 @@ public class SensorData {
 	
 	
 	// get, set
-	public int getDataID() {
-		return dataID;
-	}
-	
-	public void setDataID(int dataID) {
-		this.dataID = dataID;
-	}
-	
 	public String getSensorID() {
 		return sensorID;
 	}
@@ -83,7 +73,7 @@ public class SensorData {
 
 	@Override
 	public String toString() {
-		return "SensorData [dataID=" + dataID + ", sensorID=" + sensorID + ", time=" + time + ", states=" + states
+		return "SensorData [sensorID=" + sensorID + ", time=" + time + ", states=" + states
 				+ ", stateDetail=" + stateDetail + "]";
 	}
 	
