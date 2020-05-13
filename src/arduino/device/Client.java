@@ -31,7 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
-class SampleSharedObject {
+class ClientSharedObject {
    // Temperature
    private float sensorTemp;
    private float hopeTemp;
@@ -76,7 +76,7 @@ class SampleSharedObject {
       
 }
 
-public class client extends Application {
+public class Client extends Application {
 
    private static final String COMPORT_NAMES = "COM13";
    private static final String SERVER_ADDR = "70.12.60.94";
@@ -91,8 +91,8 @@ public class client extends Application {
    
    private ServerListener toServer = new ServerListener();
    private SerialListener toArduino = new SerialListener();
-   private SampleSharedObject temp;
-   private SampleSharedObject sensor;
+   private ClientSharedObject temp;
+   private ClientSharedObject sensor;
    private String operate;
    private Float past=999.9f;
    
@@ -120,8 +120,8 @@ public class client extends Application {
       toArduino.initialize();
 
       // SharedObject
-      temp = new SampleSharedObject();
-      sensor = new SampleSharedObject();
+      temp = new ClientSharedObject();
+      sensor = new ClientSharedObject();
       
       
       // UI ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
