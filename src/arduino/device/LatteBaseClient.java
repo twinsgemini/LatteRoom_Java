@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -14,8 +15,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 
+import arduino.device.vo.*;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.SerialPort;
@@ -50,7 +51,11 @@ public class LatteBaseClient extends Application {
 	private SerialListener toArduino = new SerialListener();
 	private SampleSharedObject temp;
 	
-	private Gson gson = new Gson();
+	private static Sensor sensorTemp = new Sensor("sensorTemp", "TEMP");
+	private static Sensor heat = new Sensor("HEAT", "HEAT");
+	private static Sensor cool = new Sensor("COOL", "COOL");
+	
+	private static Gson gson = new Gson();
 	
 	
 	// ======================================================
@@ -60,8 +65,21 @@ public class LatteBaseClient extends Application {
 		});
 	}
 	
+	public static Gson getGson() {
+		return gson;
+	}
+	
 	public static String getDeviceId() {
 		return DEVICE_ID;
+	}
+	
+	public static List<Sensor> getSensorList() {
+		List<Sensor> sensorList = new ArrayList<Sensor>();
+		sensorList.add(sensorTemp);
+		sensorList.add(heat);
+		sensorList.add(cool);
+		
+		return sensorList;
 	}
 	
 	
@@ -130,6 +148,14 @@ public class LatteBaseClient extends Application {
 					return;
 				}
 				
+				// 
+				send(new Message(LatteBaseClient.getDeviceId()
+						, "DEVICE_ID", ""));
+				send(new Message(LatteBaseClient.getDeviceId()
+						, "SENSOR_LIST"
+						, LatteBaseClient.gson.toJson(LatteBaseClient.getSensorList())));
+				
+				
 				String line = "";
 				while(true) {
 					try {
@@ -180,6 +206,11 @@ public class LatteBaseClient extends Application {
 		
 		public void send(String msg) {
 			serverOut.println(msg);
+			serverOut.flush();
+		}
+		
+		public void send(Message msg) {
+			serverOut.println(gson.toJson(msg));
 			serverOut.flush();
 		}
 		
