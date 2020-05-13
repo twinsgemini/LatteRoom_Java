@@ -1,4 +1,4 @@
-package arduino.device.vo;
+package network.server.vo;
 
 import java.sql.Date;
 
@@ -27,8 +27,6 @@ public class SensorData {
 		this.stateDetail = stateDetail;
 	}
 	
-
-	// custom method
 	public void update(String states) {
 		this.time = new Date(System.currentTimeMillis());
 		this.states = states;

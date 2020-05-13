@@ -1,8 +1,8 @@
-package arduino.device.vo;
+package network.server.vo;
 
 import com.google.gson.Gson;
 
-import arduino.device.LatteBaseClient;
+import network.server.dao.Device;
 
 public class Message {
 	private String deviceID;
@@ -13,7 +13,7 @@ public class Message {
 	
 	// constructor
 	private Message() {
-        this.deviceID = LatteBaseClient.getDeviceId();
+        this.deviceID = Device.getDeviceID();
     }
 	
 	public Message(SensorData data) {
@@ -33,8 +33,8 @@ public class Message {
 		this.dataType = type;
 		this.jsonData = data;
 	}
-
-
+	
+	
 	// custom method
 	public SensorData getSensorData() {
 		return Message.gson.fromJson(this.jsonData, SensorData.class);
@@ -53,11 +53,11 @@ public class Message {
 	public String getDeviceID() {
 		return deviceID;
 	}
-
+	
 	public void setDeviceID(String deviceID) {
 		this.deviceID = deviceID;
 	}
-
+	
 	public String getDataType() {
 		return dataType;
 	}
@@ -65,15 +65,16 @@ public class Message {
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
-
+	
 	public String getJsonData() {
 		return jsonData;
 	}
-
+	
 	public void setJsonData(String jsonData) {
 		this.jsonData = jsonData;
 	}
-
+	
+	
 	@Override
 	public String toString() {
 		return "Message [deviceID=" + deviceID + ", voType=" + dataType + ", jsonData=" + jsonData + "]";

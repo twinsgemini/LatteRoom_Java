@@ -22,8 +22,7 @@ public class LatteBaseServer {
 	
 	private ServerSocket server;
 	private ExecutorService executor;
-	private Map<Integer, Tester> list = new ConcurrentHashMap<Integer, Tester>();
-	
+	private Map<Integer, Tester> list = new ConcurrentHashMap<Integer, Tester>();	
 	private Gson gson = new Gson();
 	
 //	class sharedObj{
