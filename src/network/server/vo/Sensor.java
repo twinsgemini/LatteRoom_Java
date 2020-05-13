@@ -19,10 +19,6 @@ public class Sensor {
 		this.sensorType = sensorType;
 	}
 	
-	public Sensor() {
-		
-	}
-	
 	
 	// custom method
 	public String getStates() {
