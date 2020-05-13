@@ -27,6 +27,16 @@ public class SensorData {
 		this.stateDetail = stateDetail;
 	}
 	
+	public void update(String states) {
+		this.time = new Date(System.currentTimeMillis());
+		this.states = states;
+	}
+	
+	public void update(String states, String stateDetail) {
+		this.update(states);
+		this.stateDetail = stateDetail;
+	}
+	
 	
 	// get, set
 	public int getDataID() {
@@ -67,6 +77,12 @@ public class SensorData {
 	
 	public void setStateDetail(String stateDetail) {
 		this.stateDetail = stateDetail;
+	}
+
+	@Override
+	public String toString() {
+		return "SensorData [dataID=" + dataID + ", sensorID=" + sensorID + ", time=" + time + ", states=" + states
+				+ ", stateDetail=" + stateDetail + "]";
 	}
 	
 }

@@ -6,7 +6,7 @@ import network.server.dao.Device;
 
 public class Message {
 	private String deviceID;
-	private String voType;
+	private String dataType;
 	private String jsonData;
 	private static Gson gson = new Gson();
 	
@@ -18,20 +18,34 @@ public class Message {
 	
 	public Message(SensorData data) {
         this();
-        this.voType = "SensorData";
+        this.dataType = "SensorData";
         this.jsonData = Message.gson.toJson(data);
     }
 	
 	public Message(Alert data) {
         this();
-        this.voType = "Alert";
+        this.dataType = "Alert";
         this.jsonData = Message.gson.toJson(data);
     }
 	
-	public Message(String states, String stateDetail) {
-		this();
-		this.voType = "Request";
-		this.jsonData = Message.gson.toJson(new SensorData(states, stateDetail));
+	public Message(String id, String type, String data) {
+		this.deviceID = id;
+		this.dataType = type;
+		this.jsonData = data;
+	}
+	
+	
+	// custom method
+	public SensorData getSensorData() {
+		return Message.gson.fromJson(this.jsonData, SensorData.class);
+	}
+	
+	public Alert getAlertData() {
+		return Message.gson.fromJson(this.jsonData, Alert.class);
+	}
+	
+	public String getRequestData() {
+		return this.jsonData;
 	}
 	
 	
@@ -39,30 +53,31 @@ public class Message {
 	public String getDeviceID() {
 		return deviceID;
 	}
-
+	
 	public void setDeviceID(String deviceID) {
 		this.deviceID = deviceID;
 	}
-
-	public String getVoType() {
-		return voType;
+	
+	public String getDataType() {
+		return dataType;
 	}
-
-	public void setVoType(String voType) {
-		this.voType = voType;
+	
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
-
+	
 	public String getJsonData() {
 		return jsonData;
 	}
-
+	
 	public void setJsonData(String jsonData) {
 		this.jsonData = jsonData;
 	}
-
+	
+	
 	@Override
 	public String toString() {
-		return "Message [deviceID=" + deviceID + ", voType=" + voType + ", jsonData=" + jsonData + "]";
+		return "Message [deviceID=" + deviceID + ", voType=" + dataType + ", jsonData=" + jsonData + "]";
 	}
 	
 }

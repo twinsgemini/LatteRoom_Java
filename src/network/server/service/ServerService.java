@@ -60,8 +60,9 @@ public class ServerService {
 		Message data = gson.fromJson(jsonData, Message.class);
 		System.out.println(data.getDeviceID() + " : " + data.getJsonData());
 		
-		if (data.getVoType().equals("SensorData")) {
-			SensorData sensorData = gson.fromJson(data.getJsonData(), SensorData.class);
+		if (data.getDataType().equals("SensorData")) {
+//			SensorData sensorData = gson.fromJson(data.getJsonData(), SensorData.class);
+			SensorData sensorData = data.getSensorData();
 		}
 		
 	}
