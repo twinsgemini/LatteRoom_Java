@@ -94,9 +94,10 @@ public class LatteBaseServer {
 				try {
 					socket = server.accept();
 					Tester tester = new Tester(socket);
-					list.put(tester.hashCode(), tester);
 					
+					list.put(tester.hashCode(), tester);
 					executor.submit(tester);
+					
 				} catch (SocketTimeoutException e) {
 					if(Thread.interrupted()) {
 						break;
@@ -112,14 +113,7 @@ public class LatteBaseServer {
 	} // startServer();
 	
 	public void stopServer() {
-//		System.out.println("called stopServer");
 		try {
-//			if(list.size() > 0) {
-//				for(Tester t : list) {
-//					t.close();
-//					//				list.remove(t);
-//				}
-//			}
 			for(Integer key : list.keySet()) {
 				Tester t = list.get(key);
 				t.close();

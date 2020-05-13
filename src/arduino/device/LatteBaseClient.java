@@ -33,6 +33,8 @@ import javafx.stage.Stage;
 
 public class LatteBaseClient extends Application {
 
+	private static final String DEVICE_ID = "";
+	
 	private static final String COMPORT_NAMES = "COM12";
 	private static final String SERVER_ADDR = "localhost";
 	private static final int SERVER_PORT = 55566;
@@ -58,6 +60,9 @@ public class LatteBaseClient extends Application {
 		});
 	}
 	
+	public static String getDeviceId() {
+		return DEVICE_ID;
+	}
 	
 	
 	// ======================================================
