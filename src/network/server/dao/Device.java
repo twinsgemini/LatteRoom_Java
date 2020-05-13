@@ -64,6 +64,13 @@ public class Device implements Runnable {
 		}
 	}
 	
+	public void send(Message message) {
+		if(this.socket != null && !socket.isClosed()) {
+			output.println(gson.toJson(message));
+			output.flush();
+		}
+    }
+	
 	@Override
 	public void run() {
 		
