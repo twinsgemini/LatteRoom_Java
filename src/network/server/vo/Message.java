@@ -29,6 +29,12 @@ public class Message {
         this.jsonData = Message.gson.toJson(data);
     }
 	
+	public Message(String sensorID) {
+		this();
+		this.dataType = "Request";
+		this.jsonData = sensorID;
+	}
+	
 	public Message(String id, String type, String data) {
 		this.deviceID = id;
 		this.dataType = type;
