@@ -14,14 +14,14 @@ import network.server.vo.Message;
 
 public class Device implements Runnable {
 	
-	public static String deviceID = "A0001";
+//	public static String deviceID = "A0001";
 //	public static String deviceID = "" + Client.hashCode();
-//	private static String deviceID;
+	private String deviceID;
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
 	private ServerService service = ServerService.getInstance();
- 	private Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+ 	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
  	
  	// constructor
@@ -37,7 +37,7 @@ public class Device implements Runnable {
 	
 	
 	// get, set
-	public static String getDeviceID() {
+	public String getDeviceID() {
 		return deviceID;
 	}
 	
