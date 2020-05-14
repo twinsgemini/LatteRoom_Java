@@ -1,6 +1,6 @@
 package arduino.device.vo;
 
-import arduino.device.LatteBaseClient;
+import arduino.device.DeviceTemp;
 
 public class Alert {
 	private String deviceID;
@@ -12,7 +12,7 @@ public class Alert {
     
     // constructor
     private Alert() {
-        this.deviceID = LatteBaseClient.getDeviceId();
+        this.deviceID = DeviceTemp.getDeviceId();
     }
 
     public Alert(int hour, int min, String weeks, boolean flag) {
