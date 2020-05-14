@@ -3,7 +3,7 @@ package network.server.vo;
 import java.sql.Date;
 
 public class SensorData {
-	private int dataID;
+	private int dataID = this.hashCode();
 	private String sensorID;
 	private Date time;
 	private String states;
@@ -12,7 +12,6 @@ public class SensorData {
 	
 	// constructor
 	private SensorData() {
-		this.dataID = this.hashCode();
 		this.time = new Date(System.currentTimeMillis());
 	}
 	
