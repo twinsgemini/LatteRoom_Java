@@ -1,6 +1,8 @@
 package network.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -39,12 +41,14 @@ public class LatteServiceServer {
 			while(true) {
 				try {
 					socket = server.accept();
-					
 //					System.out.println("[" + socket.getInetAddress() + "] connect");
 					
-					Device user = new Device(socket);
-					service.add(user);
-					executor.submit(user);
+					BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					String deviceID = input.readLine();
+					String deviceType = input.readLine();
+					
+					Device device = service.add(deviceID, deviceType, socket);
+					executor.submit(device);
 					
 				} catch (SocketTimeoutException e) {
 					if(Thread.interrupted()) {
