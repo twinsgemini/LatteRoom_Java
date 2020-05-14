@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import network.server.service.ServerService;
 import network.server.vo.Message;
@@ -20,7 +21,7 @@ public class Device implements Runnable {
 	private BufferedReader input;
 	private PrintWriter output;
 	private ServerService service = ServerService.getInstance();
- 	private static Gson gson = new Gson();
+ 	private Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
  	
  	// constructor
@@ -107,9 +108,9 @@ public class Device implements Runnable {
 					
 				}
 			} catch (IOException e) {
-				this.close();
 				break;
 			}
 		} // while()
+		this.close();
 	} // run()
 }

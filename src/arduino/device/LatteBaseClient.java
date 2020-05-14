@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import arduino.device.vo.*;
 import gnu.io.CommPortIdentifier;
@@ -55,7 +56,7 @@ public class LatteBaseClient extends Application {
 	private static Sensor heat = new Sensor("HEAT", "HEAT");
 	private static Sensor cool = new Sensor("COOL", "COOL");
 	
-	private static Gson gson = new Gson();
+	private static Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 	
 	// ======================================================

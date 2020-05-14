@@ -17,13 +17,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class LatteBaseServer {
 	
 	private ServerSocket server;
 	private ExecutorService executor;
 	private Map<Integer, Tester> list = new ConcurrentHashMap<Integer, Tester>();	
-	private Gson gson = new Gson();
+	private Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 //	class sharedObj{
 //		private LinkedList<PrintWriter> list = new LinkedList<PrintWriter>();

@@ -1,6 +1,7 @@
 package network.server.vo;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import network.server.dao.Device;
 
@@ -8,7 +9,7 @@ public class Message {
 	private String deviceID;
 	private String dataType;
 	private String jsonData;
-	private static Gson gson = new Gson();
+	private static Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 	
 	// constructor

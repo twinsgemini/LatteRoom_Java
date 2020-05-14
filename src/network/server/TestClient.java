@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -44,7 +45,7 @@ public class TestClient extends Application{
 	private PrintWriter output;
 	private ExecutorService executor;
 	
-	private Gson gson = new Gson();
+	private Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 	
 	// ======================================================

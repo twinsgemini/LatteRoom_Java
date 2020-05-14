@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import network.server.dao.Device;
 import network.server.test.AbstractClient;
@@ -27,7 +28,7 @@ public class ServerService {
 	private static final Object MONITOR = new Object();
 	
 	private Map<String, Device> list = new ConcurrentHashMap<String, Device>();
-	private Gson gson = new Gson();
+	private Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 	private ServerService() {}
 	
