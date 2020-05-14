@@ -64,6 +64,9 @@ public class Device implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} // try
+		this.socket = null;
+		this.input = null;
+		this.output = null;
 		System.out.println("[" + addr + "] closed");
 	}
 	
