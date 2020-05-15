@@ -1,35 +1,37 @@
 package network.server.service;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import network.server.dao.Device;
-import network.server.test.AbstractClient;
-import network.server.test.SharedMessage;
-import network.server.test.User;
 import network.server.vo.Message;
+import network.server.vo.Sensor;
 import network.server.vo.SensorData;
 
 
 public class ServerService {
 	
-	private static final Object MONITOR = new Object();
+	private static final String DEVICE_ID = "SERVER";
+	private static final String DEVICE_TYPE = "SERVER";
 	
-	private Map<String, Device> list = new ConcurrentHashMap<String, Device>();
-	private Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+	private Map<String, Device> deviceList = new ConcurrentHashMap<String, Device>();
+	private Map<String, Device> userList = new ConcurrentHashMap<String, Device>();
+	private Map<String, Sensor> sensorList = new ConcurrentHashMap<String, Sensor>();
+	private List<String> typeHEAT = new ArrayList<String>();		// List<DeviceID>
+	private List<String> typeCOOL = new ArrayList<String>();
+	private List<String> typeTEMP = new ArrayList<String>();
+	private List<String> typeBED = new ArrayList<String>();
+	private List<String> typeLIGHT = new ArrayList<String>();
 	
+	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+	
+	// Singleton
 	private ServerService() {}
 	
 	private static class InstanceHandler {
@@ -41,20 +43,56 @@ public class ServerService {
 	}
 	
 	//
-	public void add(Device c) {
-		this.list.put(c.getDeviceID(), c);
+	public static String getDeviceId() {
+		return DEVICE_ID;
 	}
 	
+	public static String getDeviceType() {
+		return DEVICE_TYPE;
+	}
+	
+	
+	// method
+	public Device add(String deviceID, String deviceType, Socket socket) {
+//		this.list.put(c.getDeviceID(), c);
+		Device device = null;
+		if(deviceType.equals("USER")) {
+			if((device = userList.get(deviceID)) == null) {
+				/* First connection check : true
+				 * Create new Device.class			*/
+				device = new Device(deviceID, socket);
+				userList.put(deviceID, device);
+			} else {
+				/* First connection check : false
+				 * Update the socket				*/
+				device.setSocket(socket);
+			}
+		} else {
+			if((device = deviceList.get(deviceID)) == null) {
+				/* First connection check : true
+				 * Create new Device.class			*/
+				device = new Device(deviceID, socket);
+				deviceList.put(deviceID, device);
+			} else {
+				/* First connection check : false
+				 * Update the socket				*/
+				device.setSocket(socket);
+			}
+		}
+		
+		return device;
+	}
+
 	public void remove(Device c) {
-		this.list.remove(c.getDeviceID());
+		this.deviceList.remove(c.getDeviceID());
 	}
 	
 	public Device get(String id) {
-		return this.list.get(id);
+		return this.deviceList.get(id);
 	}
 	
 	public Map<String, Device> getList() {
-		return this.list;
+		return this.deviceList;
 	}
 	
 	public void dataHandler(String jsonData) {

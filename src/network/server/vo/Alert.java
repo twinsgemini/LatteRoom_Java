@@ -1,7 +1,5 @@
 package network.server.vo;
 
-import network.server.dao.Device;
-
 public class Alert {
 	private String deviceID;
     private int hour;           // 시간
@@ -11,12 +9,7 @@ public class Alert {
 
     
     // constructor
-    private Alert() {
-    	this.deviceID = Device.getDeviceID();
-    }
-
     public Alert(int hour, int min, String weeks, boolean flag) {
-        this();
         this.hour = hour;
         this.min = min;
         this.weeks = weeks;

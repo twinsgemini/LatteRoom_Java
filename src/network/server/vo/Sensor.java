@@ -4,7 +4,7 @@ import network.server.dao.Device;
 
 public class Sensor {
 	private String deviceID;
-	private String sensorID = "" + this.hashCode();
+	private String sensorID;
 	private String sensorType;
 	private SensorData recentData;
 	

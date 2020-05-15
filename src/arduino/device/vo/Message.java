@@ -6,6 +6,7 @@ import arduino.device.LatteBaseClient;
 
 public class Message {
 	private String deviceID;
+	private String deviceType;
 	private String dataType;
 	private String jsonData;
 	private static Gson gson = new Gson();
@@ -14,6 +15,7 @@ public class Message {
 	// constructor
 	private Message() {
         this.deviceID = LatteBaseClient.getDeviceId();
+        this.deviceType = LatteBaseClient.getDeviceType();
     }
 	
 	public Message(SensorData data) {
@@ -62,6 +64,14 @@ public class Message {
 
 	public void setDeviceID(String deviceID) {
 		this.deviceID = deviceID;
+	}
+
+	public String getDeviceType() {
+		return deviceType;
+	}
+
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
 	}
 
 	public String getDataType() {
