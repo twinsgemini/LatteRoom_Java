@@ -1,6 +1,7 @@
 package arduino.device.vo;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import arduino.device.LatteBaseClient;
 
@@ -9,7 +10,7 @@ public class Message {
 	private String deviceType;
 	private String dataType;
 	private String jsonData;
-	private static Gson gson = new Gson();
+	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 	
 	// constructor
@@ -21,12 +22,6 @@ public class Message {
 	public Message(SensorData data) {
         this();
         this.dataType = "SensorData";
-        this.jsonData = Message.gson.toJson(data);
-    }
-	
-	public Message(Alert data) {
-        this();
-        this.dataType = "Alert";
         this.jsonData = Message.gson.toJson(data);
     }
 	

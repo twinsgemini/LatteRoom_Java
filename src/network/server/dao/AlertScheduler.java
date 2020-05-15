@@ -19,38 +19,44 @@ public class AlertScheduler {
 	private Scheduler scheduler;
 	
 	public AlertScheduler() {
-		try {
-			scheduler = factory.getScheduler();
-			scheduler.start();
-		} catch (SchedulerException e) {
-			e.printStackTrace();
-		}
 		
 	}
 	
 	public void set(Alert alert) {
-		
-		settedTime = "0 " + alert.getMin() + " " + alert.getHour() + 
-				" ? * " + alert.getWeeks();
-		
-//		BasicConfigurator.configure();
-		
-		job = newJob(JobExecutor.class)
-                .withIdentity("job", Scheduler.DEFAULT_GROUP)
-                .build();
-		trigger = newTrigger()
-                .withIdentity("trigger", Scheduler.DEFAULT_GROUP)
-                .startNow()
-                .withSchedule(cronSchedule(settedTime))
-                .build();
-		
 		try {
-			scheduler.clear();
-			scheduler.scheduleJob(job, trigger);
-		} catch (SchedulerException e) {
-			e.printStackTrace();
+			scheduler = factory.getScheduler();
+			if(alert.isFlag() == false) {
+				if(scheduler.isStarted()) {
+					scheduler.shutdown();
+				}
+				return;
+			}
+			settedTime = "0 " + alert.getMin() + " " + alert.getHour() + 
+					" ? * " + alert.getWeeks();
+			
+//			BasicConfigurator.configure();
+			
+			job = newJob(JobExecutor.class)
+					.withIdentity("job", Scheduler.DEFAULT_GROUP)
+					.build();
+			trigger = newTrigger()
+					.withIdentity("trigger", Scheduler.DEFAULT_GROUP)
+					.startNow()
+					.withSchedule(cronSchedule(settedTime))
+					.build();
+			
+			if(scheduler.isStarted()) {
+				scheduler.clear();
+				scheduler.scheduleJob(job, trigger);
+				
+			} else {
+				scheduler.start();
+				scheduler.scheduleJob(job, trigger);
+			}
+		} catch (SchedulerException e1) {
+			e1.printStackTrace();
 		}
-	
+		
 	}
 	
 }
