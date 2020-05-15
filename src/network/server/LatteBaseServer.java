@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,30 +20,13 @@ import java.util.concurrent.TimeUnit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+
 public class LatteBaseServer {
 	
 	private ServerSocket server;
 	private ExecutorService executor;
 	private Map<Integer, Tester> list = new ConcurrentHashMap<Integer, Tester>();	
 	private Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
-	
-//	class sharedObj{
-//		private LinkedList<PrintWriter> list = new LinkedList<PrintWriter>();
-//		
-//		public void addPr(PrintWriter out) {
-//			list.addLast(out);
-//		}
-//
-//		public void broadcast(String msg) {
-//			for(PrintWriter pr : list) {
-//				pr.println(msg);
-//				pr.flush();
-//			}
-//		}
-//		
-//		
-//	}
-//	private sharedObj shared = new sharedObj();
 	
 	//
 	public static void main(String[] args) {
@@ -58,14 +42,11 @@ public class LatteBaseServer {
 		});
 		
 		
-		
-		
-		
 		System.out.println("엔터를 치면 프로그램이 종료됩니다.");
         try {
         	server.startServer();
-//            System.in.read();
-//            server.stopServer();
+            System.in.read();
+            server.stopServer();
             
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -136,6 +117,25 @@ public class LatteBaseServer {
 		}
 	} // stopServer()
 
+	class TesterSharedObject {
+		private List<Tester> list = new ArrayList<Tester>();
+		
+		public synchronized void put(Tester t) {
+			this.list.add(t);
+		}
+		
+		public synchronized Tester pop() {
+			return null;
+		}
+		
+		public void broadcast(String line) {
+			for(Tester t : list) {
+				t.send(line);
+			}
+		}
+	}
+	
+	
 	class Tester implements Runnable {
 		
 		private Socket socket;
@@ -172,27 +172,12 @@ public class LatteBaseServer {
 			try {
 				this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 				this.output = new PrintWriter(socket.getOutputStream());
-//				shared.addPr(this.output);
-				findDevice();
 			} catch (IOException e) {
 				this.close();
 			} // try
 			System.out.println("[" + socket.getInetAddress().toString() + "] connected");
+
 			
-//			Thread t = new Thread(new Runnable() {
-//				@Override
-//				public void run() {
-//					BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//					try {
-//						String s = br.readLine();
-//						send(s);
-//					} catch (Exception e) {
-//						// TODO: handle exception
-//					}
-//				}
-//			});
-			
-//			t.start();
 			String line = "";
 			while(true) {
 				try {
@@ -202,9 +187,7 @@ public class LatteBaseServer {
 						throw new IOException();
 					} else {
 						
-						//send(line);
-						sendAllDeviceThread(line);
-//						shared.broadcast(line);
+						send(line);
 					}
 				} catch (IOException e) {
 					this.close();
@@ -213,19 +196,6 @@ public class LatteBaseServer {
 			} // while()
 		} // run()
 	} // Tester.class
-	
-	public void findDevice() {
-		for(Integer t : list.keySet()) {
-			System.out.println(t);
-		}
-		
-		
-	}
-	public void sendAllDeviceThread(String msg) {
-		for(Tester t : list.values()) {
-			t.send(msg);	
-		}
-	}
 	
 }
 

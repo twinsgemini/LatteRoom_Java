@@ -43,10 +43,6 @@ public class Message {
 		return Message.gson.fromJson(this.jsonData, SensorData.class);
 	}
 	
-	public Alert getAlertData() {
-		return Message.gson.fromJson(this.jsonData, Alert.class);
-	}
-	
 	public String getRequestData() {
 		return this.jsonData;
 	}
