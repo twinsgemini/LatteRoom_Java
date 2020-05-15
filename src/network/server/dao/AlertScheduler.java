@@ -7,7 +7,8 @@ import static org.quartz.TriggerBuilder.newTrigger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-import arduino.device.vo.Alert;
+import network.server.vo.Alert;
+
 
 public class AlertScheduler {
 	
